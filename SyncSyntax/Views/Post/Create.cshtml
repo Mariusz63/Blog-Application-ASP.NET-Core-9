@@ -1,0 +1,78 @@
+﻿@model PostViewModel
+
+@{
+    ViewData["Title"] = "Create Post";
+}
+
+<style>
+    .content-rapper {
+        padding: 20px;
+        max-width: 1000px;
+        margin: 0 auto;
+        font-family: sans-serif;
+    }
+</style>
+
+<div class="content-rapper">
+    <div class="row">
+        <div class="col-6">
+            <h2>@ViewData["Title"]</h2>
+        </div>
+
+        <div class="col-6 text-end">
+            <a asp-action="Index" class="btn btn-primary float-right">Back to List</a>
+        </div>
+    </div>
+
+    <hr />
+
+    <form asp-action="Create" asp-controller="Post" method="post" enctype="multipart/form-data">
+        <div class="validation-summary">
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Post.Title"></label>
+            <input asp-for="Post.Title" class="form-control" />
+            <span asp-validation-for="Post.Title" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Post.CategoryId"></label>
+            <select asp-for="Post.CategoryId" class="form-control" asp-items="Model.Categories">
+                <option value="">-- Select Category --</option>
+            </select>
+            <span asp-validation-for="Post.CategoryId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Post.Author"></label>
+            <input asp-for="Post.Author" class="form-control" />
+            <span asp-validation-for="Post.Author" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Post.Content"></label>
+            <textarea asp-for="Post.Content" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="Post.Content" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="FeatureImage">Upload Image</label>
+            <input asp-for="FeatureImage" type="file" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-success mt-3">Create</button>
+        <a asp-action="Index" class="btn btn-secondary mt-1">Back to List</a>
+    </form>
+</div>
+
+@section Scripts {
+    <!-- Place the first <script> tag in your HTML's <head> -->
+    <script src="https://cdn.tiny.cloud/1/q6sxka6ga6a8pkieq582bo7kmcms7cz61l9v9c61boizey01/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
+    <script>
+               tinymce.init({
+          selector: 'textarea'         
+        });
+    </script>
+}
