@@ -1,3 +1,57 @@
-﻿@model PostViewModel
+﻿@using SyncSyntax.Helpers
+@model IEnumerable<Post>
 @{
+    ViewData["Title"] = "Blog Posts";
 }
+
+
+<div class="text-center m-3">
+    @if(ViewBag.Categories != null)
+    {
+        foreach(var category in ViewBag.Categories)
+        {
+            <a asp-controller="post" asp-action="Index" asp-route-categotyId = "@category.Id"
+            class="badge bg-warning text-decoration-none ms-2"> @category.Name</a>
+        }
+    }
+</div>
+
+<div class="text-end my-2">
+    <a class="btn btn-primary" asp-action="Create" asp-controller="Post">Create New Post</a>
+</div>
+
+<div class="row row-cols-3 g-4">
+    @foreach(var post in Model)
+    {
+        <div class="col">
+            <div class="card h-100 border-0 shadow-lg rounded-1">
+                <img src="@post.FeatureImagePath" 
+                class="card-img-top" 
+                alt="@post.Title"
+                style="height:300px; object-fit:cover"/>
+
+                <div class="card-body">
+                    <h5 class="card-title">@post.Title</h5> 
+                    <p class="text-muted mb-2">Published on @post.PublishedDate.ToString("dd MMM yyyy")</p>
+
+                    @{
+                       string content = RemoveHtmlTagHelper.RemoveHtmlTags(post.Content);
+                    }
+
+                    <p class="card-text"> 
+                        @(content.Length > 150 ? content.Substring(0, 150) + "..." : content)
+                    </p>
+
+                    <span class="badge bg-info text-dark mb-2">@post.Category.Name</span>
+                </div>
+
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <a asp-action="Details" asp-controller="Post" asp-route-id="@post.Id">Read More</a>
+                    <div class="text-end">
+                        <a>@post.Author</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

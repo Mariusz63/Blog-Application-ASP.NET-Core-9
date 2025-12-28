@@ -1,7 +1,7 @@
-﻿@model PostViewModel
+﻿@model EditPostViewModel
 
 @{
-    ViewData["Title"] = "Create Post";
+    ViewData["Title"] = "Edit Post";
 }
 
 <style>
@@ -31,6 +31,7 @@
             <div asp-validation-summary="All" class="text-danger"></div>
         </div>
 
+        <input asp-for="Post.Id" hidden/>
         <div class="form-group">
             <label asp-for="Post.Title"></label>
             <input asp-for="Post.Title" class="form-control" />
@@ -62,7 +63,7 @@
             <input asp-for="FeatureImage" type="file" class="form-control" />
         </div>
 
-        <button type="submit" class="btn btn-success mt-1">Create</button>
+        <button type="submit" class="btn btn-success mt-1">Update</button>
         <a asp-action="Index" class="btn btn-secondary mt-1">Back to List</a>
     </form>
 </div>
@@ -72,7 +73,7 @@
     <script src="https://cdn.tiny.cloud/1/q6sxka6ga6a8pkieq582bo7kmcms7cz61l9v9c61boizey01/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
     <script>
                tinymce.init({
-          selector: 'textarea'         
+          selector: 'textarea'
         });
     </script>
 }
