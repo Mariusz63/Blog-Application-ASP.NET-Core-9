@@ -92,6 +92,51 @@ public class PostController : Controller
     }
 
     [HttpPost]
+    public async Task<IActionResult> Edit(EditPostViewModel editPostViewModel)
+    {
+        if (ModelState.IsValid)
+        {
+            return View(editPostViewModel);
+        }
+
+        // Fetch the existing post from the database, as no-tracking to avoid EF Core tracking issues
+        var postFromDb = await _context.Posts.AsNoTracking().FirstOrDefaultAsync(p => p.Id == editPostViewModel.Post.Id);
+
+        if (postFromDb == null)
+        {
+            return NotFound();
+        }
+
+        if (editPostViewModel.FeatureImage != null)
+        {
+            var inputFileExtension = Path.GetExtension(editPostViewModel.FeatureImage.FileName).ToLower();
+            bool isAllowed = _allowedExtension.Contains(inputFileExtension);
+
+            if (!isAllowed)
+            {
+                ModelState.AddModelError("FeatureImage", "Invalid image format. Only .jpg, .jpeg, .png, .gif are allowed.");
+                return View(editPostViewModel);
+            }
+
+            var existingImagePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", Path.GetFileName(postFromDb.FeatureImagePath));
+            if (System.IO.File.Exists(existingImagePath))
+            {
+                System.IO.File.Delete(existingImagePath);
+            }
+
+            editPostViewModel.Post.FeatureImagePath = await UploadFileToFolder(editPostViewModel.FeatureImage);
+        }
+        else
+        {
+            editPostViewModel.Post.FeatureImagePath = postFromDb.FeatureImagePath;
+        }
+
+        _context.Posts.Update(editPostViewModel.Post);
+        await _context.SaveChangesAsync();
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
     public async Task<IActionResult> Create(PostViewModel postViewModel)
     {
         if (ModelState.IsValid)
