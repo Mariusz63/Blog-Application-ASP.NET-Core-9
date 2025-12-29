@@ -1,8 +1,8 @@
-using System.Diagnostics;
+using BlogApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using SyncSyntax.Models;
+using System.Diagnostics;
 
-namespace SyncSyntax.Controllers
+namespace BlogApp.Controllers
 {
     public class HomeController : Controller
     {

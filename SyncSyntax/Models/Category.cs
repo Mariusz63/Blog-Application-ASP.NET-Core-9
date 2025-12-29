@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SyncSyntax.Models
+namespace BlogApp.Models
 {
     public class Category
     {

@@ -3,14 +3,14 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SyncSyntax.Models
+namespace BlogApp.Models
 {
     public class Post
     {
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage ="The title is require")]
+        [Required(ErrorMessage = "The title is require")]
         [MaxLength(200, ErrorMessage = "The title cannot exceed 200 characters.")]
         public string? Title { get; set; }
 

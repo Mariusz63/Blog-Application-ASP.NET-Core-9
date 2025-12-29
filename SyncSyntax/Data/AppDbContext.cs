@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SyncSyntax.Models;
+﻿using BlogApp.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace SyncSyntax.Data
+namespace BlogApp.Data
 {
     public class AppDbContext : DbContext
     {

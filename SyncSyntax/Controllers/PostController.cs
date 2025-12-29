@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BlogApp.Data;
+using BlogApp.Models;
+using BlogApp.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using SyncSyntax.Data;
-using SyncSyntax.Models;
-using SyncSyntax.Models.ViewModels;
 
-namespace SyncSyntax.Controllers;
+namespace BlogApp.Controllers;
 
 public class PostController : Controller
 {
@@ -64,6 +64,38 @@ public class PostController : Controller
 
         return View(postViewModel);
     }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(PostViewModel postViewModel)
+    {
+        if (ModelState.IsValid)
+        {
+            var inputFileExtension = Path.GetExtension(postViewModel.FeatureImage.FileName).ToLower();
+            bool isAllowed = _allowedExtension.Contains(inputFileExtension);
+
+            if (!isAllowed)
+            {
+                ModelState.AddModelError("FeatureImage", "Invalid image format. Only .jpg, .jpeg, .png, .gif are allowed.");
+                return View(postViewModel);
+            }
+
+            postViewModel.Post.FeatureImagePath = await UploadFileToFolder(postViewModel.FeatureImage);
+            await _context.Posts.AddAsync(postViewModel.Post);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        //To repopulate categories in case 
+        postViewModel.Categories = _context.Categories.Select(c => new SelectListItem
+        {
+            Value = c.Id.ToString(),
+            Text = c.Name
+        }).ToList();
+
+        return View(postViewModel);
+    }
+
 
     [HttpGet]
     public async Task<IActionResult> Edit(int id)
@@ -136,35 +168,36 @@ public class PostController : Controller
         return RedirectToAction("Index");
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Create(PostViewModel postViewModel)
+    [HttpGet]
+    public async Task<IActionResult> Delete(int id)
     {
-        if (ModelState.IsValid)
+        var postFromDb = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
+        if (postFromDb == null)
         {
-            var inputFileExtension = Path.GetExtension(postViewModel.FeatureImage.FileName).ToLower();
-            bool isAllowed = _allowedExtension.Contains(inputFileExtension);
-
-            if (!isAllowed)
-            {
-                ModelState.AddModelError("FeatureImage", "Invalid image format. Only .jpg, .jpeg, .png, .gif are allowed.");
-                return View(postViewModel);
-            }
-
-            postViewModel.Post.FeatureImagePath = await UploadFileToFolder(postViewModel.FeatureImage);
-            await _context.Posts.AddAsync(postViewModel.Post);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Index", "Home");
+            return NotFound();
         }
+        return View(postFromDb);
+    }
 
-        //To repopulate categories in case 
-        postViewModel.Categories = _context.Categories.Select(c => new SelectListItem
+    [HttpPost]
+    public async Task<IActionResult> DeleteConfirm(int id)
+    {
+        var postFromDb = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
+        if (postFromDb == null)
         {
-            Value = c.Id.ToString(),
-            Text = c.Name
-        }).ToList();
-
-        return View(postViewModel);
+            return NotFound();
+        }
+        if (string.IsNullOrEmpty(postFromDb.FeatureImagePath))
+        {
+            var existingImagePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", Path.GetFileName(postFromDb.FeatureImagePath));
+            if (System.IO.File.Exists(existingImagePath))
+            {
+                System.IO.File.Delete(existingImagePath);
+            }
+        }
+        _context.Posts.Remove(postFromDb);
+        await _context.SaveChangesAsync();
+        return RedirectToAction("Index");
     }
 
     [HttpPost]

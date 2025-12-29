@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace SyncSyntax.Models.ViewModels
+namespace BlogApp.Models.ViewModels
 {
     public class PostViewModel
     {

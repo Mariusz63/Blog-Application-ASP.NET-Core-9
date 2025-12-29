@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SyncSyntax.Models
+namespace BlogApp.Models
 {
     public class Comment
     {
@@ -12,7 +12,7 @@ namespace SyncSyntax.Models
         [MaxLength(100, ErrorMessage = "The author name cannot exceed 100 characters.")]
         public string? Author { get; set; }
 
-        [Required(ErrorMessage ="The content is required.")]
+        [Required(ErrorMessage = "The content is required.")]
         [MaxLength(2000, ErrorMessage = "The content cannot exceed 2000 characters.")]
         public string? Content { get; set; }
 
@@ -21,7 +21,7 @@ namespace SyncSyntax.Models
 
         // Foreign Key
         [ForeignKey("Post")]
-        public int PostId { get; set; } 
+        public int PostId { get; set; }
         public Post? Post { get; set; }
 
     }

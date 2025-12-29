@@ -1,4 +1,4 @@
-namespace SyncSyntax.Models
+namespace BlogApp.Models
 {
     public class ErrorViewModel
     {
