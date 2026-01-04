@@ -1,4 +1,5 @@
 using BlogApp.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,16 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     }
 );
+
+// Configure Identity services and password options
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options=>
+    {
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequiredLength = 5;
+    }).AddEntityFrameworkStores<AppDbContext>();
 
 var app = builder.Build();
 
