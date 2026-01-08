@@ -28,23 +28,21 @@ public class AuthController : Controller
     [HttpPost]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
-        //Check for validation error
-        if (!ModelState.IsValid)
+        if (ModelState.IsValid)
         {
-            //Create Identity user object
-            var user = new IdentityUser()
+            var user = new IdentityUser
             {
                 UserName = model.Email,
                 Email = model.Email
             };
 
-            //Create user in the database
+            // Create the user
             var result = await _userManager.CreateAsync(user, model.Password);
 
-            //If user creation is successfully done
+            // If user creation is successful 
             if (result.Succeeded)
             {
-                //if the User role exist in data base
+                // Ensure the "User" role exists
                 if (!await _roleManager.RoleExistsAsync("User"))
                 {
                     await _roleManager.CreateAsync(new IdentityRole("User"));
@@ -56,11 +54,16 @@ public class AuthController : Controller
                 return RedirectToAction("Index", "Post");
             }
 
-
-            return RedirectToAction("Index", "Post");
+            // If there are errors, add them to the ModelState
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
         }
+
         return View(model);
     }
+
 
     //Login
     [HttpGet]
@@ -102,5 +105,11 @@ public class AuthController : Controller
     {
         await _signInManager.SignOutAsync();
         return RedirectToAction("Index", "Post");
+    }
+
+    [HttpGet]
+    public IActionResult AccessDenied()
+    {
+        return View();
     }
 }

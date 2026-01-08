@@ -25,6 +25,8 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
+    options.LoginPath = "/Auth/Login";
+    options.AccessDeniedPath = "/Auth/AccessDenied";
     options.ExpireTimeSpan = TimeSpan.FromDays(7);
     options.SlidingExpiration = true;
 });
@@ -85,6 +87,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Post}/{action=Index}/{id?}")
     .WithStaticAssets();
-
 
 app.Run();

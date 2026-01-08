@@ -19,12 +19,16 @@
     }
 </style>
 
-<div class="text-end">
-    <a class="btn btn-secondary my-3" asp-action="Edit" asp-controller="Post" asp-route-id="@Model.Id">Edit Post</a>
-    <a class="btn btn-danger my-3 mx-3" asp-action="Delete" asp-controller="Post" asp-route-id="@Model.Id">Delete Post</a>
-</div>
+@if (User.IsInRole("Admin"))
+{
+    <div class="text-end">
+        <a class="btn btn-secondary my-3" asp-action="Edit" asp-controller="Post" asp-route-id="@Model.Id">Edit Post</a>
+        <a class="btn btn-danger my-3 mx-3" asp-action="Delete" asp-controller="Post" asp-route-id="@Model.Id">Delete Post</a>
+    </div>
+}
 
-<div calss="content-wrapper">
+
+<div class="content-wrapper">
     <h1>@Model.Title</h1>
     <p>
         <span class="badge bg-primary">By:</span> @Model.Author |
@@ -60,18 +64,28 @@
 
     <hr />
     <h4>Add a Comment</h4>
-    <form id="commentForm">
-        <div class="form-group">
-            <label for="Author">Name</label>
-            <input for="Author" id="Author" class="form-control" name="Author" required class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="Content">Content</label>
-            <textarea for="Content" id="Content" name="Content" rows="3" required class="form-control"></textarea>
-        </div>
 
-        <button type="submit" class="btn btn-primary mt-2 p-2 rounded">Submit Comment </button>
-    </form>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <p>You are logged in as @User.Identity.Name</p>
+
+        <form id="commentForm">
+            <div class="form-group">
+                <label for="Author">Name</label>
+                <input for="Author" id="Author" class="form-control" name="Author" required class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="Content">Content</label>
+                <textarea for="Content" id="Content" name="Content" rows="3" required class="form-control"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-2 p-2 rounded">Submit Comment </button>
+        </form>
+    }
+    else
+    {
+        <p>Please <a asp-controller="Auth" asp-action="Login">log in</a> to add a comment.</p>
+    }
 </div>
 
 @section Scripts {
@@ -95,7 +109,7 @@
                         postId: postId
                     }),
                     success: function (response) {
-                        $('commentForm').[0].reset();
+                        $('#commentForm').[0].reset();
                         $("#commentSection").append(`
                             <div class="card mb-3 shadow-sm">
                                 <div class="card-body">

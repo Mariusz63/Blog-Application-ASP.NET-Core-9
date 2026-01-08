@@ -1,6 +1,7 @@
 ﻿using BlogApp.Data;
 using BlogApp.Models;
 using BlogApp.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -53,6 +54,7 @@ public class PostController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public IActionResult Create()
     {
         var postViewModel = new PostViewModel();
@@ -98,6 +100,7 @@ public class PostController : Controller
 
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Edit(int id)
     {
         if (id == null || id <= 0)
@@ -169,6 +172,7 @@ public class PostController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         var postFromDb = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
@@ -200,10 +204,12 @@ public class PostController : Controller
         return RedirectToAction("Index");
     }
 
+    [Authorize]
     [HttpPost]
     public JsonResult AddComment([FromBody] Comment comment)
     {
         comment.PostedDate = DateTime.Now;
+
         _context.Comments.Add(comment);
         _context.SaveChanges();
 
@@ -214,6 +220,7 @@ public class PostController : Controller
             postedDate = comment.PostedDate.ToString("dd MMM yyyy HH:mm")
         });
     }
+
 
     public async Task<string> UploadFileToFolder(IFormFile file)
     {
