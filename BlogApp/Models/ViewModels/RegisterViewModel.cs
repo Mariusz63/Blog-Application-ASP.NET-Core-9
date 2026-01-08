@@ -17,6 +17,7 @@ namespace BlogApp.Models.ViewModels
         [Required(ErrorMessage = "Please confirm your password")]
         [Compare("Password", ErrorMessage = "Passwords do not match")]
         [DataType(DataType.Password)]
+        [DisplayName("Confirm Password")]
         public string ConfirmPassword { get; set; }
     }
 }
