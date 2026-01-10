@@ -1,5 +1,5 @@
 
-**BlogApp** to prosty projekt **bloga**, stworzony w języku **C#** z wykorzystaniem platformy **.NET 10**. Aplikacja została przygotowana jako projekt edukacyjny i demonstracyjny, pokazujący podstawową strukturę aplikacji oraz organizację kodu w środowisku Visual Studio.
+**BlogApp** to prosty projekt **bloga**, stworzony w języku **C#** z wykorzystaniem platformy **.NET 10**. Aplikacja została przygotowana jako projekt edukacyjny i demonstracyjny, pokazujący podstawową strukturę aplikacji oraz organizację kodu w środowisku Visual Studio. 
 
 Blog pełni rolę aplikacji przykładowej, która może być rozwijana o kolejne funkcjonalności
 ## 🎯 Cel projektu
@@ -9,8 +9,6 @@ Celem projektu jest:
 - ćwiczenie składni języka **C#**,
 - pokazanie organizacji plików i katalogów w projekcie .NET,
 - demonstracja procesu publikacji projektu w repozytorium GitHub.
-
-Projekt skupia się na **czytelności kodu, poprawnej składni oraz strukturze**, a nie na złożonej logice biznesowej.
 
 ---
 
