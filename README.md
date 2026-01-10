@@ -1,0 +1,42 @@
+## 🎯 Cel projektu
+
+Celem projektu jest:
+- zaprezentowanie poprawnej struktury rozwiązania **Visual Studio (.sln)**,
+- ćwiczenie składni języka **C#**,
+- pokazanie organizacji plików i katalogów w projekcie .NET,
+- demonstracja procesu publikacji projektu w repozytorium GitHub.
+
+Projekt skupia się na **czytelności kodu, poprawnej składni oraz strukturze**, a nie na złożonej logice biznesowej.
+
+---
+
+## 📂 Struktura repozytorium
+
+Repozytorium zawiera następujące elementy:
+
+- `BlogApp.sln`  
+  Główny plik rozwiązania Visual Studio, umożliwiający otwarcie całego projektu w IDE.
+
+- `BlogApp/`  
+  Katalog projektu zawierający:
+  - pliki źródłowe w języku **C#**,
+  - konfigurację projektu,
+  - ewentualne zasoby dodatkowe (np. HTML / CSS).
+
+- `.gitignore`  
+  Plik konfiguracyjny Git ignorujący pliki generowane automatycznie przez Visual Studio (bin, obj itd.).
+
+- `.gitattributes`  
+  Konfiguracja atrybutów repozytorium Git.
+
+---
+
+## 🧠 Zakres funkcjonalny
+
+W projekcie można znaleźć:
+- podstawową strukturę aplikacji w C#,
+- przykłady definicji klas i metod,
+- logiczne uporządkowanie kodu źródłowego,
+- konfigurację projektu zgodną ze standardami .NET,
+- przygotowanie projektu do uruchomienia i dalszej rozbudowy.
+
